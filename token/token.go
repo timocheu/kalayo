@@ -8,15 +8,44 @@ type Token struct {
 }
 
 const (
-	// Illegal terms
+	// ILLEGAL TERMS
 	ILLEGAL = "ILLEGAL"
 	EOF     = "EOF"
+
+	// IDENTIFIERS
+	IDENT  = "IDENT"
+	ASSIGN = "="
+
+	// LITERALS
+	INT = "INT"
+
+	// OPERATORS
+	ADD   = "+"
+	MINUS = "-"
 
 	// DELMITERS
 	COMMA     = ","
 	SEMICOLON = ";"
-	LPAREN    = ")"
-	RPAREN    = "("
-	LBRACKET  = "{"
-	RBRACKET  = "}"
+
+	LPAREN   = ")"
+	RPAREN   = "("
+	LBRACKET = "{"
+	RBRACKET = "}"
+
+	// KEYWORDS
+	VAR      = "VAR"
+	FUNCTION = "FUNCTION"
 )
+
+var keywords = map[string]TokenType{
+	"var": VAR,
+	"fn":  FUNCTION,
+}
+
+func LookUpIdent(literal string) TokenType {
+	if tokType, exist := keywords[literal]; exist {
+		return tokType
+	}
+
+	return IDENT
+}

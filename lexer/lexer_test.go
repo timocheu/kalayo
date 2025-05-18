@@ -7,19 +7,45 @@ import (
 )
 
 func TestNextToken(t *testing.T) {
-	input := `;,(){}`
+	input := `
+	var age = ;
+
+	fn check(age) {
+	age + ;
+	};
+
+	var result = check(age);
+	`
 
 	test := []struct {
 		expectedType    token.TokenType
 		expectedLiteral string
 	}{
+		{token.VAR, "var"},
+		{token.IDENT, "age"},
+		{token.ASSIGN, "="},
+		// {token.INT, "10"},
 		{token.SEMICOLON, ";"},
-		{token.COMMA, ","},
+		{token.FUNCTION, "fn"},
+		{token.IDENT, "check"},
 		{token.LPAREN, "("},
+		{token.IDENT, "age"},
 		{token.RPAREN, ")"},
 		{token.LBRACKET, "{"},
+		{token.IDENT, "age"},
+		{token.ADD, "+"},
+		// {token.INT, "10"},
+		{token.SEMICOLON, ";"},
 		{token.RBRACKET, "}"},
-		{token.EOF, ""},
+		{token.SEMICOLON, ";"},
+		{token.VAR, "var"},
+		{token.IDENT, "result"},
+		{token.ASSIGN, "="},
+		{token.IDENT, "check"},
+		{token.LPAREN, "("},
+		{token.IDENT, "age"},
+		{token.RPAREN, ")"},
+		{token.SEMICOLON, ";"},
 	}
 
 	l := New(input)
