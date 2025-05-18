@@ -8,10 +8,10 @@ import (
 
 func TestNextToken(t *testing.T) {
 	input := `
-	var age = ;
+	var age = 10;
 
 	fn check(age) {
-	age + ;
+	age + 10;
 	};
 
 	var result = check(age);
@@ -24,7 +24,7 @@ func TestNextToken(t *testing.T) {
 		{token.VAR, "var"},
 		{token.IDENT, "age"},
 		{token.ASSIGN, "="},
-		// {token.INT, "10"},
+		{token.INT, "10"},
 		{token.SEMICOLON, ";"},
 		{token.FUNCTION, "fn"},
 		{token.IDENT, "check"},
@@ -34,7 +34,7 @@ func TestNextToken(t *testing.T) {
 		{token.LBRACKET, "{"},
 		{token.IDENT, "age"},
 		{token.ADD, "+"},
-		// {token.INT, "10"},
+		{token.INT, "10"},
 		{token.SEMICOLON, ";"},
 		{token.RBRACKET, "}"},
 		{token.SEMICOLON, ";"},

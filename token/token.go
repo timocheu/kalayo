@@ -13,15 +13,15 @@ const (
 	EOF     = "EOF"
 
 	// IDENTIFIERS
-	IDENT  = "IDENT"
-	ASSIGN = "="
+	IDENT = "IDENT"
 
 	// LITERALS
 	INT = "INT"
 
 	// OPERATORS
-	ADD   = "+"
-	MINUS = "-"
+	ASSIGN = "="
+	PLUS   = "+"
+	MINUS  = "-"
 
 	// DELMITERS
 	COMMA     = ","
