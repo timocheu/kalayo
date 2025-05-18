@@ -15,6 +15,9 @@ func TestNextToken(t *testing.T) {
 	};
 
 	var result = check(age);
+
+	!*/<>;
+
 	`
 
 	test := []struct {
@@ -33,7 +36,7 @@ func TestNextToken(t *testing.T) {
 		{token.RPAREN, ")"},
 		{token.LBRACKET, "{"},
 		{token.IDENT, "age"},
-		{token.ADD, "+"},
+		{token.PLUS, "+"},
 		{token.INT, "10"},
 		{token.SEMICOLON, ";"},
 		{token.RBRACKET, "}"},
@@ -45,6 +48,12 @@ func TestNextToken(t *testing.T) {
 		{token.LPAREN, "("},
 		{token.IDENT, "age"},
 		{token.RPAREN, ")"},
+		{token.SEMICOLON, ";"},
+		{token.BANG, "!"},
+		{token.ASTERISK, "*"},
+		{token.SLASH, "/"},
+		{token.LT, "<"},
+		{token.GT, ">"},
 		{token.SEMICOLON, ";"},
 	}
 
