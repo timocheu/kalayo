@@ -8,17 +8,15 @@ hatag edad = 18;
 buhat checkEdad(edad) {
     kung (edad < 18) {
         suwat("Dili pwedi kasulod");
-        balik
+        balik;
     };
 };
 ```
 
 # Keywords
 ### Declarations
-    let -> hatag
-    ```go
-        hatag kwarta = 1000;
-    ```
+    var -> hatag
+    hatag kwarta = 1000;
 ### Conditionals
     if -> kung
 
