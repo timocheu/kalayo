@@ -18,6 +18,10 @@ func TestNextToken(t *testing.T) {
 
 	!*/<>;
 
+	<=
+	>=
+	!=
+	==
 	`
 
 	test := []struct {
@@ -55,6 +59,10 @@ func TestNextToken(t *testing.T) {
 		{token.LT, "<"},
 		{token.GT, ">"},
 		{token.SEMICOLON, ";"},
+		{token.LT_EQUAL, "<="},
+		{token.GT_EQUAL, ">="},
+		{token.NOT_EQUAL, "!="},
+		{token.EQUAL, "=="},
 	}
 
 	l := New(input)

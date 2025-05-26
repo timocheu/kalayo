@@ -27,8 +27,13 @@ const (
 	SLASH    = "/"
 	BANG     = "!"
 
-	LT = "<"
-	GT = ">"
+	LT       = "<"
+	GT       = ">"
+	LT_EQUAL = "<="
+	GT_EQUAL = ">="
+
+	EQUAL     = "=="
+	NOT_EQUAL = "!="
 
 	// DELMITERS
 	COMMA     = ","
@@ -45,6 +50,8 @@ const (
 	RETURN   = "RETURN"
 	IF       = "IF"
 	ELSE     = "ELSE"
+	TRUE     = "TRUE"
+	FALSE    = "FALSE"
 )
 
 var keywords = map[string]TokenType{
@@ -53,6 +60,8 @@ var keywords = map[string]TokenType{
 	"return": RETURN,
 	"if":     IF,
 	"else":   ELSE,
+	"true":   TRUE,
+	"false":  FALSE,
 }
 
 func LookUpIdent(literal string) TokenType {
