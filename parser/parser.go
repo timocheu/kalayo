@@ -52,8 +52,8 @@ func (p *Parser) parseStatement() ast.Statement {
 	}
 }
 
-func (p *Parser) parseLetStatement() *ast.LetStatement {
-	stmt := &ast.LetStatement{Token: p.curToken}
+func (p *Parser) parseLetStatement() *ast.VarStatement {
+	stmt := &ast.VarStatement{Token: p.curToken}
 
 	// Check if the next token is identifier
 	if !p.expectPeek(token.IDENT) {

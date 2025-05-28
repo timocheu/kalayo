@@ -49,21 +49,21 @@ func testLetStatement(t *testing.T, s ast.Statement, name string) bool {
 	}
 
 	// Assert that s is an letStatement which is under the Statement interface
-	letStmt, ok := s.(*ast.LetStatement)
+	varStmt, ok := s.(*ast.VarStatement)
 	if !ok {
 		t.Errorf("s not *ast.LetStatement. got=%T", s)
 		return false
 	}
 
-	if letStmt.Name.Value != name {
-		t.Errorf("letStmt.Name.Value not '%s'. got=%s",
-			name, letStmt.Name.Value)
+	if varStmt.Name.Value != name {
+		t.Errorf("varStmt.Name.Value not '%s'. got=%s",
+			name, varStmt.Name.Value)
 		return false
 	}
 
-	if letStmt.Name.TokenLiteral() != name {
-		t.Errorf("letStmt.Name.TokenLiteral() not '%s'. got=%s",
-			name, letStmt.Name.TokenLiteral())
+	if varStmt.Name.TokenLiteral() != name {
+		t.Errorf("varStmt.Name.TokenLiteral() not '%s'. got=%s",
+			name, varStmt.Name.TokenLiteral())
 		return false
 	}
 

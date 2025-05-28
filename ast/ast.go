@@ -33,15 +33,15 @@ func (p *Program) TokenLiteral() string {
 
 // Start of nodes types
 
-// Let holds the Let token itself, identifier, value
-type LetStatement struct {
+// Var holds the var token itself, identifier, value
+type VarStatement struct {
 	Token token.Token
 	Name  *Identifier
 	Value Expression
 }
 
-func (ls *LetStatement) statementNode() {}
-func (ls *LetStatement) TokenLiteral() string {
+func (ls *VarStatement) statementNode() {}
+func (ls *VarStatement) TokenLiteral() string {
 	return ls.Token.Literal
 }
 
