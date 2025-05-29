@@ -8,11 +8,12 @@ import (
 	"github.com/timocheu/kalayo/parser"
 )
 
+// With S
 func TestVarStatements(t *testing.T) {
 	input := `
-	var a 10;
-	var = 1000;
-	var 44223;
+	var a = 10;
+	var b = 1000;
+	var c = 44223;
 	`
 
 	l := lexer.New(input)
@@ -38,13 +39,14 @@ func TestVarStatements(t *testing.T) {
 	for i, tt := range tests {
 		stmt := program.Statements[i]
 
-		if !testLetStatement(t, stmt, tt.expectedIdentifier) {
+		if !testVarStatement(t, stmt, tt.expectedIdentifier) {
 			return
 		}
 	}
 }
 
-func testLetStatement(t *testing.T, s ast.Statement, name string) bool {
+// Without S
+func testVarStatement(t *testing.T, s ast.Statement, name string) bool {
 	if s.TokenLiteral() != "var" {
 		t.Errorf("s.TokenLiteral not 'var'. got=%q", s.TokenLiteral())
 	}
@@ -52,7 +54,7 @@ func testLetStatement(t *testing.T, s ast.Statement, name string) bool {
 	// Assert that s is an letStatement which is under the Statement interface
 	varStmt, ok := s.(*ast.VarStatement)
 	if !ok {
-		t.Errorf("s not *ast.LetStatement. got=%T", s)
+		t.Errorf("s not *ast.VarStatement. got=%T", s)
 		return false
 	}
 
@@ -83,4 +85,35 @@ func checkParseErrors(t *testing.T, p *parser.Parser) {
 	}
 
 	t.FailNow()
+}
+
+func testReturnStatements(t *testing.T) {
+	input := `
+	return 100;
+	return 42;
+	return 54 + 23;
+	`
+
+	l := lexer.New(input)
+	p := parser.New(l)
+
+	program := p.ParseProgram()
+	checkParseErrors(t, p)
+
+	if len(program.Statements) != 3 {
+		t.Fatalf("program.Statements does not contain 3 statements. got=%d instead",
+			len(program.Statements))
+	}
+
+	for _, stmt := range program.Statements {
+		returnStmt, ok := stmt.(*ast.ReturnStatement)
+		if !ok {
+			t.Errorf("stmt not *ast.ReturnStatement. got=%T", stmt)
+			continue
+		}
+		if returnStmt.TokenLiteral() != "return" {
+			t.Errorf("returnStmt.TokenLiteral() is not 'return', got=%q",
+				returnStmt.TokenLiteral())
+		}
+	}
 }
