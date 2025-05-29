@@ -8,17 +8,18 @@ import (
 	"github.com/timocheu/kalayo/parser"
 )
 
-func TestLetStatements(t *testing.T) {
+func TestVarStatements(t *testing.T) {
 	input := `
-	var a = 10;
-	var b = 123;
-	var c = 44223;
+	var a 10;
+	var = 1000;
+	var 44223;
 	`
 
 	l := lexer.New(input)
 	p := parser.New(l)
 
 	program := p.ParseProgram()
+	checkParseErrors(t, p)
 	if program == nil {
 		t.Fatalf("ParserProgram() returned nil or failed")
 	}
@@ -68,4 +69,18 @@ func testLetStatement(t *testing.T, s ast.Statement, name string) bool {
 	}
 
 	return true
+}
+
+func checkParseErrors(t *testing.T, p *parser.Parser) {
+	errors := p.Errors()
+	if len(errors) == 0 {
+		return
+	}
+
+	t.Errorf("parser has %d errors", len(errors))
+	for _, msg := range errors {
+		t.Errorf("parser error: %q", msg)
+	}
+
+	t.FailNow()
 }

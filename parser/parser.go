@@ -1,6 +1,8 @@
 package parser
 
 import (
+	"fmt"
+
 	"github.com/timocheu/kalayo/ast"
 	"github.com/timocheu/kalayo/lexer"
 	"github.com/timocheu/kalayo/token"
@@ -11,10 +13,15 @@ type Parser struct {
 
 	curToken  token.Token
 	peekToken token.Token
+
+	errors []string
 }
 
 func New(l *lexer.Lexer) *Parser {
-	p := &Parser{l: l}
+	p := &Parser{
+		l:      l,
+		errors: []string{},
+	}
 
 	// Set the tokens
 	p.nextToken()
@@ -32,7 +39,7 @@ func (p *Parser) ParseProgram() *ast.Program {
 	program := &ast.Program{}
 	program.Statements = []ast.Statement{}
 
-	for p.curToken.Type != token.EOF {
+	for !p.expectPeek(token.EOF) {
 		stmt := p.parseStatement()
 		if stmt != nil {
 			program.Statements = append(program.Statements, stmt)
@@ -62,6 +69,10 @@ func (p *Parser) parseLetStatement() *ast.VarStatement {
 
 	stmt.Name = &ast.Identifier{Token: p.curToken, Value: p.curToken.Literal}
 
+	if !p.expectPeek(token.ASSIGN) {
+		return nil
+	}
+
 	// Skip expression till find delimiter
 	for !p.curTokenIs(token.SEMICOLON) {
 		p.nextToken()
@@ -83,6 +94,19 @@ func (p *Parser) expectPeek(t token.TokenType) bool {
 		p.nextToken()
 		return true
 	} else {
+		p.peekError(t)
 		return false
 	}
+}
+
+// Error handlings
+func (p *Parser) Errors() []string {
+	return p.errors
+}
+
+// Add errors
+func (p *Parser) peekError(t token.TokenType) {
+	msg := fmt.Sprintf("expected next token to be %s, got %s instead",
+		t, p.peekToken.Type)
+	p.errors = append(p.errors, msg)
 }
