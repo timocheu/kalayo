@@ -1,11 +1,10 @@
-package parser_test
+package parser
 
 import (
 	"testing"
 
 	"github.com/timocheu/kalayo/ast"
 	"github.com/timocheu/kalayo/lexer"
-	"github.com/timocheu/kalayo/parser"
 )
 
 // With S
@@ -17,7 +16,7 @@ func TestVarStatements(t *testing.T) {
 	`
 
 	l := lexer.New(input)
-	p := parser.New(l)
+	p := New(l)
 
 	program := p.ParseProgram()
 	checkParseErrors(t, p)
@@ -73,7 +72,7 @@ func testVarStatement(t *testing.T, s ast.Statement, name string) bool {
 	return true
 }
 
-func checkParseErrors(t *testing.T, p *parser.Parser) {
+func checkParseErrors(t *testing.T, p *Parser) {
 	errors := p.Errors()
 	if len(errors) == 0 {
 		return
@@ -95,7 +94,7 @@ func testReturnStatements(t *testing.T) {
 	`
 
 	l := lexer.New(input)
-	p := parser.New(l)
+	p := New(l)
 
 	program := p.ParseProgram()
 	checkParseErrors(t, p)
