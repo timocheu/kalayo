@@ -10,36 +10,34 @@ import (
 
 // With S
 func TestVarStatements(t *testing.T) {
-	input := `
-	var a = 10;
-	var b = 1000;
-	var c = 44223;
-	`
-
-	l := lexer.New(input)
-	p := New(l)
-
-	program := p.ParseProgram()
-	checkParseErrors(t, p)
-	if program == nil {
-		t.Fatalf("ParserProgram() returned nil or failed")
-	}
-	if len(program.Statements) != 3 {
-		t.Fatalf("program Statements does not contain 3 Statements. got=%d", len(program.Statements))
-	}
-
 	tests := []struct {
-		expectedIdentifier string
+		input             string
+		expectedIdentifer string
+		expectedValue     any
 	}{
-		{"a"},
-		{"b"},
-		{"c"},
+		{"var a = 5", "a", 5},
+		{"var b = true", "b", true},
+		{"var c = y", "c", "y"},
 	}
 
-	for i, tt := range tests {
-		stmt := program.Statements[i]
+	for _, tt := range tests {
+		l := lexer.New(tt.input)
+		p := New(l)
+		program := p.ParseProgram()
+		checkParseErrors(t, p)
 
-		if !testVarStatement(t, stmt, tt.expectedIdentifier) {
+		if len(program.Statements) != 1 {
+			t.Fatalf("program.Statements does not contain 1 statements. got=%d",
+				len(program.Statements))
+		}
+
+		stmt := program.Statements[0]
+		if !testVarStatement(t, stmt, tt.expectedIdentifer) {
+			return
+		}
+
+		val := stmt.(*ast.VarStatement).Value
+		if !testLiteralExpression(t, val, tt.expectedValue) {
 			return
 		}
 	}
