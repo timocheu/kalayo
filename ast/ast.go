@@ -227,3 +227,52 @@ func (bs *BlockStatement) String() string {
 
 	return builder.String()
 }
+
+type FunctionLiteral struct {
+	Token      token.Token
+	Parameters []*Identifier
+	Body       *BlockStatement
+}
+
+func (fl *FunctionLiteral) expressionNode()      {}
+func (fl *FunctionLiteral) TokenLiteral() string { return fl.Token.Literal }
+func (fl *FunctionLiteral) String() string {
+	var builder strings.Builder
+
+	params := []string{}
+	for _, s := range fl.Parameters {
+		params = append(params, s.Value)
+	}
+
+	builder.WriteString(fl.TokenLiteral())
+	builder.WriteString("(")
+	builder.WriteString(strings.Join(params, ", "))
+	builder.WriteString(")")
+	builder.WriteString(fl.Body.String())
+
+	return builder.String()
+}
+
+type CallExpression struct {
+	Token     token.Token
+	Function  Expression // Could be Identifier or FunctionLiteral
+	Arguments []Expression
+}
+
+func (ce *CallExpression) expressionNode()      {}
+func (ce *CallExpression) TokenLiteral() string { return ce.Token.Literal }
+func (ce *CallExpression) String() string {
+	var builder strings.Builder
+
+	args := []string{}
+	for _, arg := range ce.Arguments {
+		args = append(args, arg.String())
+	}
+
+	builder.WriteString(ce.Function.String())
+	builder.WriteString("(")
+	builder.WriteString(strings.Join(args, ", "))
+	builder.WriteString(")")
+
+	return builder.String()
+}
